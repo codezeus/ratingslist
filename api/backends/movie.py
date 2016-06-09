@@ -1,15 +1,15 @@
-from base import BaseItem
-from types import is_numeric
+from api.backends.base import BaseBackend
+from api.types import is_numeric
 
-class Movie(BaseItem):
-    """Movie represents a movie type.
+class MovieBackend(BaseBackend):
+    """MovieBackend represents a movie type.
 
     A movie scrapes metacritic.com finding movies that match a given query.
     Movies have titles, scores, and a link to the dedicated page.
 
     """
     def __init__(self):
-        BaseItem.__init__(self)
+        BaseBackend.__init__(self)
 
         self.base_url = 'http://www.metacritic.com'
         self.url = '{base_url}/search/all/{query}/results?cats%5Bmovie%5D=1&search_type=advanced'

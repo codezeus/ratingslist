@@ -1,7 +1,7 @@
 import requests, urllib, bs4
 
-class BaseItem:
-    """BaseItem is an abstract method which items should inherit from.
+class BaseBackend:
+    """BaseBackend is an abstract method which items should inherit from.
 
     It provides a simple way to fetch a URL and parse the HTML for use in an
     item type. Items can then use the BeutifulSoup API to parse nodes and

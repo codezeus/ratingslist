@@ -1,36 +1,31 @@
-from book import Book
-from movie import Movie
-from music import Music
-from place import Place
-from recipe import Recipe
-from product import Product
+class Client:
+    """Client is the main entrypoint for all API interactions.
 
-class API:
-    """API is the basic entrypoint to the API
+    Backends can be called through dot notation to make API calls. For
+    example, if you want to find movies then you can call:
 
-    It is mainly used for the search method which will determine the item to
-    look up and return the search results from the relevant API.
+        import api
+        client = api.get_client()
+        matches = client.movie.search('The Room')
+
+    Invalid backends will raise an AttributeError.
 
     """
-    def search(self, category, query):
-        """search looks up the type of request and sends the query to the
-        item's search method
+    @classmethod
+    def get_new(cls):
+        return cls()
 
-        """
-        endpoint = None
-        if category == 'book':
-            endpoint = Book()
-        elif category == 'movie':
-            endpoint = Movie()
-        elif category == 'music':
-            endpoint = Music()
-        elif category == 'place':
-            endpoint = Place()
-        elif category == 'recipe':
-            endpoint = Recipe()
-        elif category == 'product':
-            endpoint = Product()
-        else:
-            raise Exception('Invalid type requested')
+    def __getattr__(self, attr):
+        try:
+            cls = '{}Backend'.format(attr.title())
+            module = __import__('api.backends.{}'.format(attr), fromlist=[cls])
+            return getattr(module, cls)()
+        except ImportError:
+            raise AttributeError('API does not have backend "%s"' % attr)
 
-        return endpoint.search(query)
+def get_client():
+    """get_client returns a new instance of an API client"""
+    return Client.get_new()
+
+__all__ = ['get_client']
+
