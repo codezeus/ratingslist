@@ -1,6 +1,5 @@
 import urllib
 from collections import namedtuple
-# from dateutil import parser as date_parser
 
 from api.parsers.base import BaseParser
 from api.types import is_numeric
