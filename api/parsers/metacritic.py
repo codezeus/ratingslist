@@ -1,3 +1,4 @@
+import urllib
 from dateutil import parser as date_parser
 
 from api.parsers.base import BaseParser
@@ -11,35 +12,34 @@ class MetacriticParser(BaseParser):
     define their type.
 
     """
-    def __init__(self):
-        BaseParser.__init__(self)
+    base_url = 'http://www.metacritic.com'
+    url = ('{base_url}/search/all/{query}/results?cats%5B{type}%5D=1'
+           '&search_type=advanced')
 
-        self.type = ''
-        self.base_url = 'http://www.metacritic.com'
-        self.url = ('{base_url}/search/all/{query}/results?cats%5B{type}%5D=1'
-                    '&search_type=advanced')
+    query = ''
 
     def parse(self, query):
         """parse makes the request, builds the HTML, and returns a response"""
-        self.set_url(query)
-        html = self.get_html(query)
+        self.query = query
+
+        html = self.get_html()
 
         results = []
         for item in html.find_all('li', {'class': 'result'}):
-            results.append(self.response(item))
+            results.append(self.get_response(item))
 
         return results
 
-    def set_url(self, query):
+    def get_url(self):
         """set_url sets the current URL to query"""
-        self.url = self.url.format(
+        return self.url.format(
             base_url=self.base_url,
-            query=query,
+            query=urllib.quote_plus(self.query),
             type=self.type
         )
 
-    def response(self, list_item):
-        """response specifies the response object to return"""
+    def get_response(self, list_item):
+        """get_response specifies the response object to return"""
         return {
             'title': self.get_title(list_item),
             'score': self.get_score(list_item),

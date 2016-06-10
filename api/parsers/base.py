@@ -1,5 +1,4 @@
 import requests
-import urllib
 import bs4
 
 
@@ -12,19 +11,19 @@ class BaseParser:
 
     """
     def __init__(self):
-        self.url = ''
-        self.base_url = ''
         self.headers = {
             'User-Agent': ('Mozilla/5.0 (Windows; U; Windows NT 6.1; rv:2.2) '
                            'Gecko/20110201')
         }
 
-    def get_url(self, query):
+    def get_url(self):
         """get_url formats a URL for the request"""
-        query_string = urllib.quote_plus(query)
-        return self.url.format(base_url=self.base_url, query=query_string)
+        raise NotImplementedError
 
-    def get_html(self, query):
+    def get_response(self, list_item):
+        raise NotImplementedError
+
+    def get_html(self):
         """get_html makes the request and returns a BeautifulSoup object"""
-        r = requests.get(self.get_url(query), headers=self.headers)
+        r = requests.get(self.get_url(), headers=self.headers)
         return bs4.BeautifulSoup(r.text, 'html.parser')

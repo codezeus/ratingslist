@@ -8,13 +8,12 @@ class BaseBackend:
 
         """
         if not self.parser_class:
-            raise AttributeError((
-            "'%s' should either include a `parser_class` attribute, "
-            "or override the `get_parser_class()` method."
-            % self.__class__.__name__
-        ))
+            raise AttributeError(("'%s' should either include the "
+                                  "`parser_class` attribute, or override the "
+                                  "`get_parser_class()` method."
+                                  % self.__class__.__name__))
         return self.parser_class
 
-    def search(self, query):
+    def search(self, *args, **kwargs):
         """search finds the result list in the HTML and builds a response"""
-        return self.get_parser_class().parse(query)
+        return self.get_parser_class().parse(*args, **kwargs)
