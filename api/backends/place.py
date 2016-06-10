@@ -1,15 +1,8 @@
 from api.backends.base import BaseBackend
 
+
 class PlaceBackend(BaseBackend):
+    """PlaceBackend represents a place type"""
     def __init__(self):
         BaseBackend.__init__(self)
-
-        self.base_url = ''
-        self.url = ''
-
-    def search(self, query):
-        """search finds the result list in the HTML and builds return objects"""
-        html = self.get_html(query)
-
-        results = []
-        return results
+        self.parser_class = None

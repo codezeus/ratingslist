@@ -23,9 +23,9 @@ class Client:
         except ImportError:
             raise AttributeError('API does not have backend "%s"' % attr)
 
+
 def get_client():
     """get_client returns a new instance of an API client"""
     return Client.get_new()
 
 __all__ = ['get_client']
-

@@ -6,6 +6,7 @@ def is_float(value):
     except ValueError:
         return False
 
+
 def is_int(value):
     """is_int determines if a value is an integer instance"""
     try:
@@ -13,6 +14,7 @@ def is_int(value):
         return True
     except ValueError:
         return False
+
 
 def is_numeric(value):
     """is_numeric determines if a value is an integer or float"""
